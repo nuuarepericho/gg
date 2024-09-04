@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ягоды - Интернет-магазин одежды</title>
+    <style>
+        body {
+            font-family: 'Verdana', sans-serif;
+            background-color: #e8f5e9;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 20px;
+            text-align: right;
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 36px;
+            margin: 0;
+            padding-right: 20px;
+        }
+
+        nav {
+            background-color: #ff69b4;
+            padding: 15px;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .search-container {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .search-container input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 20px;
+            border: none;
+            width: 250px;
+            margin-right: 10px;
+        }
+
+        .search-container button {
+            padding: 10px 20px;
+            background-color: #ff69b4;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Два столбца с одинаковой шириной */
+            gap: 20px;
+        }
+
+        .product-item {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: center;
+            border-radius: 15px;
+            background-color: #f8f8f8;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+            position: relative;
+            height: 300px; /* Установите фиксированную высоту для карточек */
+            overflow: hidden; /* Скрыть все, что выходит за пределы карточки */
+        }
+
+        .product-item img {
+            width: 100%;
+            height: 150px; /* Ограничьте высоту изображения */
+            object-fit: cover; /* Обеспечьте корректное масштабирование изображения */
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .product-item h3 {
+            color: #4caf50;
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .product-item p {
+            color: #ff69b4;
+            font-size: 16px;
+            margin: 5px 0;
+        }
+
+        .product-item button {
+            background-color: #ff69b4;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 20px;
+            margin-top: 10px; /* Добавьте немного отступа сверху */
+        }
+
+        .product-item:hover {
+            transform: scale(1.05);
+        }
+
+        footer {
+            background-color: #ff69b4;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        /* Модальное окно для увеличенного изображения */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .modal-content {
+            margin: 10% auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+        }
+
+        .modal-content img {
+            width: 100%;
+            height: auto;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            color: #fff;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .telegram-link {
+            margin-top: 20px;
+            display: block;
+            text-align: center;
+        }
+
+        .telegram-link a {
+            color: #ff69b4;
+            font-size: 20px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="search-container">
+            <input id="searchInput" type="text" placeholder="Поиск по сайту...">
+            <button onclick="searchProducts()">Найти</button>
+        </div>
+        <h1>Ягоды</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#">Главная</a></li>
+            <li><a href="#">Каталог</a></li>
+            <li><a href="#">Акции</a></li>
+            <li><a href="#">Контакты</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h2>Наши товары</h2>
+        <div id="productGrid" class="product-grid">
+            <!-- Пример карточек товаров -->
+            <div class="product-item">
+                <img src="../images/product1.jpg" alt="трусы">
+                <h3>Трусы с бабочкой</h3>
+                <p>100 ₽</p>
+                <button onclick="showModal(this)">Купить</button>
+            </div>
+            <div class="product-item">
+                <img src="../images/product2.jpg" alt="трусики">
+                <h3>вязаный слоник</h3>
+                <p>150 ₽</p>
+                <button onclick="showModal(this)">Купить</button>
+            </div>
+            <div class="product-item">
+                <img src="../images/product3.jpg" alt="труханы">
+                <h3>слоник2.0</h3>
+                <p>2000 ₽</p>
+                <button onclick="showModal(this)">Купить</button>
+            </div>
+            <div class="product-item">
+                <img src="../images/product4.jpg" alt="Товар 4">
+                <h3>супермен</h3>
+                <p>2500 ₽</p>
+                <button onclick="showModal(this)">Купить</button>
+            </div>
+            <div class="product-item">
+                <img src="../images/product5.jpg" alt="трусики">
+                <h3>поп звезда</h3>
+                <p>15000 ₽</p>
+                <button onclick="showModal(this)">Купить</button>
+            </div>
+            <div class="product-item">
+                <img src="../images/product6.jpg" alt="Товар Н">
+                <h3>класика бокса</h3>
+                <p>228 ₽</p>
+                <button>Купить</button>
+            </div>
+            <div class="product-item">
+                <img src="../images/product7.jpg" alt="труханы">
+                <h3>бабкины модные</h3>
+                <p>20 ₽</p>
+                <button onclick="showModal(this)">Купить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно -->
+    <div id="myModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <img id="modalImage" src="" alt="Увеличенное изображение">
+        </div>
+        <div class="telegram-link">
+            <a href="https://t.me/tatytityty" target="_blank">Перейти в наш Telegram канал</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Ягоды. Все права защищены.</p>
+    </footer>
+
+    <script>
+        function showModal(button) {
+            var modal = document.getElementById("myModal");
+            var modalImg = document.getElementById("modalImage");
+            var productItem = button.closest('.product-item');
+            var img = productItem.querySelector('img');
+
+            modal.style.display = "block";
+            modalImg.src = img.src;
+        }
+
+        function closeModal() {
+            var modal = document.getElementById("myModal");
+            modal.style.display = "none";
+        }
+
+        function searchProducts() {
+            var input, filter, productGrid, productItems, h3, i, txtValue;
+            input = document.getElementById('searchInput');
+            filter = input.value.toLowerCase();
+            productGrid = document.getElementById('productGrid');
+            productItems = productGrid.getElementsByClassName('product-item');
+
+            for (i = 0; i < productItems.length; i++) {
+                h3 = productItems[i].getElementsByTagName("h3")[0];
+                txtValue = h3.textContent || h3.innerText;
+                if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                    productItems[i].style.display = "";
+                } else {
+                    productItems[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
